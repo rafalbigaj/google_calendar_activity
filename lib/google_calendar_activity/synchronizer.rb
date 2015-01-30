@@ -48,8 +48,12 @@ module GoogleCalendarActivity
     def map_title(title)
       title.downcase!
       @mapping.each do |key, value|
-        title[key] = value
+        begin
+          title[key.downcase] = value
+        rescue IndexError
+        end
       end
+      title
     end
 
     def synchronize_event(event)

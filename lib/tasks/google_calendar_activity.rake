@@ -9,7 +9,7 @@ namespace :google_calendar do
       synchronizer = GoogleCalendarActivity::Synchronizer.new(user: token.user,
                                                               calendar: token.calendar,
                                                               refresh_token: token.refresh_token,
-                                                              mapping: token.settings,
+                                                              mapping: YAML.load(token.settings),
                                                               logger: logger)
       synchronizer.synchronize(Time.now - 14.days)
       result = io.string.chomp

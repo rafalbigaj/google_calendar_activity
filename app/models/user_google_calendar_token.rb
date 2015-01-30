@@ -10,7 +10,6 @@ class UserGoogleCalendarToken < ActiveRecord::Base
 
   after_validation do
     object = YAML.load(self.settings) # check YAML
-p object
     self.errors.add :settings, "must be a hash" unless object.is_a?(Hash)
   end
 end
