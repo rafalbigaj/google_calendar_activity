@@ -3,13 +3,17 @@ class UserGoogleCalendarToken < ActiveRecord::Base
 
   belongs_to :user
 
-  serialize :settings
-
   validates :user_id, presence: true, :uniqueness => true
   validates :refresh_token, presence: true
 
-  after_validation do
-    object = YAML.load(self.settings) # check YAML
-    self.errors.add :settings, "must be a hash" unless object.is_a?(Hash)
+  def mappings
+    self.settings.to_s.lines.inject({}) do |hash, line|
+      if line =~ /^([^:]+): (.+)$/
+        key = $1.chomp
+        value = $2.chomp
+        hash[key] = value
+        hash
+      end
+    end
   end
 end
