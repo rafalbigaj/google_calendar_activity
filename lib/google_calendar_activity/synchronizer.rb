@@ -8,9 +8,13 @@ module GoogleCalendarActivity
 
     attr_reader :calendar
 
+    OAUTH_CONFIG_PATH = File.expand_path('../../../config/oauth.yml', __FILE__)
+
     def initialize(opts)
-      @calendar ||= Google::Calendar.new(client_id: '210767827009-eu3a73gdhtoptm9d8omf8gq0fipkoe3e.apps.googleusercontent.com',
-                                         client_secret: 'haXEgdGXPUD0JBUTBaLykRB4',
+      oauth_config = load_oauth_config
+      raise "Run 'rake google_calendar:oauth_config' first" unless oauth_config
+      @calendar ||= Google::Calendar.new(client_id: oauth_config[:client_id],
+                                         client_secret: oauth_config[:client_secret],
                                          calendar: opts.fetch(:calendar, ''),
                                          redirect_url: opts[:redirect_url]
       )
@@ -39,6 +43,13 @@ module GoogleCalendarActivity
     end
 
     protected
+
+    def load_oauth_config
+      if File.exists?(OAUTH_CONFIG_PATH)
+        config = File.binread(OAUTH_CONFIG_PATH)
+        YAML.load(config) rescue nil
+      end
+    end
 
     def log_in
       unless @logged_in
