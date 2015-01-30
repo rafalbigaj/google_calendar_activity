@@ -22,7 +22,9 @@ namespace :google_calendar do
                                                               mapping: token.mappings,
                                                               force: ENV['FORCE'],
                                                               logger: logger)
-      synchronizer.synchronize(Time.now - 14.days)
+      ndays = ENV['DAYS'].to_i
+      ndays = 14 if ndays == 0
+      synchronizer.synchronize(Time.now - ndays.days)
       result = io.string.chomp
       unless result.empty?
         puts result

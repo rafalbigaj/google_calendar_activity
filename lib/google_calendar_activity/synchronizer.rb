@@ -92,6 +92,8 @@ module GoogleCalendarActivity
       else
         title = map_title(event.title)
         case title
+          when /^\$/
+            # ignore events starting with $ (already logged)
           when /\@([a-z0-9\-_]+)/i
             synchronize_project_event $1.downcase, event, start_date, hours
           when /\#([a-z0-9\-_]+)/
@@ -149,6 +151,10 @@ module GoogleCalendarActivity
                                                   hours: hours,
                                                   comments: event.title)
         GoogleCalendarTimeEntry.create!(time_entry: time_entry, event_id: event.id, etag: event.raw["etag"])
+        unless event.title =~ / \*$/
+          event.title += ' *' # mark as logged
+          event.save
+        end
       end
     end
   end
