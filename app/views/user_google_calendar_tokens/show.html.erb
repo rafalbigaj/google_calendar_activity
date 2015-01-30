@@ -1,0 +1,46 @@
+<h2><%= @user.name %> - Google Calendar Synchronization</h2>
+
+<fieldset class="box tabular">
+  <legend><%= l(:google_calendar_settings_legend) %></legend>
+  <% if @token %>
+      <% if @connected %>
+          <%= image_tag 'cloud-icon-green.png', :plugin => 'google_calendar_activity', style: 'float:right' %>
+      <% end %>
+
+      <%= form_for @token, url: user_google_calendar_token_path(@user) do |f| %>
+          <p>
+            <label><%= l(:google_calendar_id) %></label>
+            <%= f.text_field :calendar %>
+          </p>
+          <p>
+            <label><%= l(:google_calendar_mapping) %></label>
+            <%= f.text_area :settings %>
+          </p>
+
+          <p>
+            <%= f.submit l(:button_apply) %>
+          </p>
+      <% end %>
+  <% else %>
+      <%= link_to l(:authorize_google_account), @authorize_url %>
+  <% end %>
+</fieldset>
+
+<fieldset class="box tabular">
+  <legend><%= l(:google_calendar_synchronization_legend) %></legend>
+
+  <% if @token && @token.synchronized_at %>
+      <p>
+        <label><%= l(:google_calendar_last_synchronization) %></label>
+        <%= format_time(@token.synchronized_at) %>
+      </p>
+      <p>
+        <label><%= l(:google_calendar_last_result) %></label>
+        <textarea rows="10" readonly disabled><%= @token.synchronization_result %></textarea>
+      </p>
+  <% else %>
+  <p>
+    <i><%= l(:google_calendar_not_synchronized) %></i>
+  </p>
+  <% end %>
+</fieldset>
