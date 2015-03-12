@@ -3,6 +3,15 @@ require 'google_calendar'
 class UserGoogleCalendarTokensController < ApplicationController
   unloadable
 
+  TIME_RANGES = [
+		  ['synchronize last day', 1],
+		  ['synchronize last 2 days', 2],
+		  ['synchronize last 3 days', 3],
+		  ['synchronize last week', 7],
+		  ['synchronize last 2 weeks', 14],
+		  ['synchronize last 4 weeks', 28]
+  ]
+
   def show
     @user = User.find(params[:user_id])
     @token = UserGoogleCalendarToken.where(user_id: @user).first
@@ -30,7 +39,10 @@ class UserGoogleCalendarTokensController < ApplicationController
     @user = User.find(params[:user_id])
     @token = UserGoogleCalendarToken.where(user_id: @user).first
     if @token.update_attributes(params[:user_google_calendar_token])
-      redirect_to user_google_calendar_token_path(@user)
+			if params[:synchronize]
+				@token.synchronize!(true)
+      end
+			redirect_to user_google_calendar_token_path(@user)
     else
       flash[:error] = @token.errors.full_messages.join(", ")
       render :show

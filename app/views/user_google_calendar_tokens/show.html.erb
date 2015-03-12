@@ -16,9 +16,14 @@
             <label><%= l(:google_calendar_mapping) %></label>
             <%= f.text_area :settings, rows: 15 %>
           </p>
+          <p>
+            <label><%= l(:google_calendar_time_range) %></label>
+            <%= f.select :time_range, UserGoogleCalendarTokensController::TIME_RANGES %>
+          </p>
 
           <p>
             <%= f.submit l(:button_apply) %>
+            <%= f.submit l(:google_calendar_synchronize_now), name: 'synchronize' %>
           </p>
       <% end %>
   <% else %>
@@ -36,7 +41,7 @@
       </p>
       <p>
         <label><%= l(:google_calendar_last_result) %></label>
-        <textarea rows="10" readonly disabled><%= @token.synchronization_result %></textarea>
+        <textarea rows="30" readonly disabled><%= @token.synchronization_result %></textarea>
       </p>
   <% else %>
   <p>

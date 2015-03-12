@@ -7,6 +7,8 @@ en:
   google_calendar_synchronization_legend: "Synchronization Results"
   google_calendar_id: "Calendar ID"
   google_calendar_mapping: "Title Mapping"
+  google_calendar_time_range: "Time Range"
+  google_calendar_synchronize_now: "Apply & Synchronize Now"
   google_calendar_not_synchronized: "Not yet synchronized"
   google_calendar_last_synchronization: "Synchronized at"
   google_calendar_last_result: "Result"
