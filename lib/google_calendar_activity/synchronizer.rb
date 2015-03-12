@@ -201,7 +201,7 @@ module GoogleCalendarActivity
 			event.save if changed
 
     rescue
-	    @logger.error "Unable to update calendar event title or description (#{event.start_time}): #{$!}"
+	    @logger.error "Unable to update calendar event title  or description (#{event.title} on #{event.start_time}): #{$!}"
     end
 
     def find_project_and_issue(title)
