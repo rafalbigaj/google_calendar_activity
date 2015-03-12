@@ -41,7 +41,7 @@ module GoogleCalendarActivity
       events = @calendar.find_events_in_range(start_date, end_date, max_results: 500)
       events.each do |event|
         synchronize_event event
-      end
+      end if events
 			remove_absent_events start_date, end_date, events.map(&:id)
     end
 
