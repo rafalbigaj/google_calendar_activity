@@ -59,6 +59,7 @@ module GoogleCalendarActivity
 	        includes(:time_entry).
 	        joins(:time_entry).
 			    where('event_id NOT IN(?)', existing_ids).
+	        where('time_entries.user_id = ?', @user.id).
 					where('time_entries.spent_on BETWEEN ? AND ?', start_date, end_date).each do |gc_entry|
 
 		    time_entry = gc_entry.time_entry
