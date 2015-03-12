@@ -126,6 +126,8 @@ module GoogleCalendarActivity
         update_existing_event project, issue, title, gc_time_entry, event, start_date, hours
       elsif project
 	      synchronize_new_event project, issue, title, event, start_date, hours
+      else
+	      @logger.debug "Unrecognized activity: #{title}"
       end
     end
 
